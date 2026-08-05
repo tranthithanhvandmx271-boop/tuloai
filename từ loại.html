@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sổ Tay & Trò Chơi Ôn Tập Từ Loại Tiếng Anh</title>
+    <style>
+        :root {
+            --primary-color: #ff8fab;
+            --secondary-color: #ffb5a7;
+            --accent-color: #b5e2fa;
+            --bg-color: #fff9fb;
+            --card-bg: #ffffff;
+            --text-color: #4a4a4a;
+            --border-color: #ffccd5;
+            --success-color: #16a34a;
+            --error-color: #dc2626;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            border: 3px solid var(--primary-color);
+            box-shadow: 5px 5px 0px #ffccd5;
+        }
+
+        h1 {
+            text-align: center;
+            color: #d81159;
+            margin-bottom: 25px;
+            font-size: 26px;
+            border: 2px dashed var(--primary-color);
+            padding: 15px;
+            border-radius: 20px;
+            background: #fff0f3;
+            transform: rotate(-0.5deg);
+        }
+
+        /* Menu chính (Sổ tay & Trò chơi) */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: #ffe5ec;
+            border: 2px solid var(--primary-color);
+            padding: 10px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #c9184a;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 2px 2px 0px var(--primary-color);
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 3px 4px 0px #b5179e;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        h2 {
+            border-bottom: 2px dashed var(--primary-color);
+            padding-bottom: 8px;
+            color: #c9184a;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        h3 {
+            color: #590d22;
+        }
+
+        ul {
+            line-height: 1.8;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .example {
+            color: #0077b6;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 2px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #ffe5ec;
+            color: #590d22;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fff0f3;
+        }
+
+        .note {
+            font-style: italic;
+            color: #582f0e;
+            background-color: #fffaa0;
+            padding: 15px;
+            border-left: 5px solid #ffb703;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 2px 2px 0px #ffe169;
+        }
+
+        /* Style dành riêng cho phần Trò Chơi */
+        .question-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border-left: 6px solid var(--primary);
+        }
+
+        .q-header {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .flashcard-toggle {
+            background: #fef3c7;
+            color: #d97706;
+            border: 1px dashed #f59e0b;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .flashcard-toggle:hover { background: #fde68a; }
+
+        input[type="text"] {
+            padding: 10px 14px;
+            width: 55%;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .btn-check {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-check:hover { background: var(--primary-hover); }
+
+        .result-msg {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .sub-menu {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .sub-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--primary);
+            transition: all 0.2s;
+        }
+
+        .sub-btn.active, .sub-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .game-group {
+            display: none;
+        }
+
+        .game-group.active {
+            display: block;
+        }
+
+        .btn-speak {
+            background: #0d9488;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: background 0.2s;
+        }
+        .btn-speak:hover { background: #0f766e; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>✨ Hệ Thống Sổ Tay & Trò Chơi Từ Loại Tiếng Anh ✨</h1>
+
+    <!-- Menu lựa chọn các phần chính -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openMainTab(event, 'noun')">1. Danh Từ</button>
+        <button class="tab-btn" onclick="openMainTab(event, 'adj')">2. Tính Từ</button>
+        <button class="tab-btn" onclick="openMainTab(event, 'adv')">3. Trạng Từ</button>
+        <button class="tab-btn" onclick="openMainTab(event, 'verb')">4. Động Từ</button>
+        <button class="tab-btn" onclick="openMainTab(event, 'sec-game')" style="background-color: #e0f2fe; color: #0369a1; border-color: #0284c7;">🎮 Trò Chơi Ôn Tập</button>
+    </div>
+
+    <!-- TAB 1: DANH TỪ -->
+    <div id="noun" class="tab-content active">
+        <h2>1. Động Từ ➔ Danh Từ (Chỉ hành động, trạng thái hoặc kết quả)</h2>
+        <ul>
+            <li><strong>-tion / -ation / -ition / -sion:</strong> Chỉ hành động hoặc quá trình <span class="example">decide ➔ decision, educate ➔ education</span></li>
+            <li>Động từ kết thúc bằng <strong>-y</strong> ➔ đổi <strong>y</strong> thành <strong>i</strong>, thêm <strong>-ence</strong> <span class="example">depend ➔ dependence</span></li>
+            <li>Động từ kết thúc bằng <strong>-ure</strong>, bỏ <strong>e</strong> thêm <strong>-ance</strong></li>
+            <li>Động từ kết thúc bằng <strong>-ear</strong>, chỉ thêm <strong>-ance</strong> <span class="example">appear ➔ appearance</span></li>
+            <li><strong>-age, -ery:</strong> Chỉ trạng thái, địa điểm hoặc quá trình <span class="example">post ➔ postage, bake ➔ bakery</span></li>
+            <li><strong>-er / -or / -ar / -ant / -ent / -ee:</strong> Chỉ người thực hiện hoặc người chịu tác động.</li>
+        </ul>
+        <div class="note">
+            💡 <strong>Ý nghĩa chung của đuôi người (-er/or vs -ee):</strong><br>
+            - Hậu tố <strong>-er / -or</strong> mang ý nghĩa: <em>"Người chủ động làm hành động"</em> (Ví dụ: employer = người tuyển dụng).<br>
+            - Hậu tố <strong>-ee</strong> mang ý nghĩa: <em>"Người chịu sự tác động của hành động"</em> (Ví dụ: employee = nhân viên, người được tuyển dụng).
+        </div>
+
+        <h3>Bảng chi tiết -er/-or và -ee:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Verb</th>
+                    <th>-er/-or (Người thực hiện)</th>
+                    <th>Nghĩa</th>
+                    <th>-ee (Người chịu tác động)</th>
+                    <th>Nghĩa</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>employ</td><td>employer</td><td>người tuyển dụng</td><td>employee</td><td>nhân viên, người được tuyển dụng</td></tr>
+                <tr><td>2</td><td>interview</td><td>interviewer</td><td>người phỏng vấn</td><td>interviewee</td><td>người được phỏng vấn</td></tr>
+                <tr><td>3</td><td>examine</td><td>examiner</td><td>giám khảo, người kiểm tra</td><td>examinee</td><td>thí sinh, người được kiểm tra</td></tr>
+                <tr><td>4</td><td>train</td><td>trainer</td><td>huấn luyện viên</td><td>trainee</td><td>thực tập sinh, người được đào tạo</td></tr>
+                <tr><td>5</td><td>appoint</td><td>appointer</td><td>người bổ nhiệm</td><td>appointee</td><td>người được bổ nhiệm</td></tr>
+                <tr><td>6</td><td>nominate</td><td>nominator</td><td>người đề cử</td><td>nominee</td><td>người được đề cử</td></tr>
+                <tr><td>7</td><td>pay</td><td>payer</td><td>người trả tiền</td><td>payee</td><td>người nhận tiền</td></tr>
+                <tr><td>8</td><td>lease</td><td>lessor</td><td>bên cho thuê</td><td>lessee</td><td>bên thuê</td></tr>
+                <tr><td>9</td><td>grant</td><td>grantor</td><td>bên cấp, chuyển nhượng</td><td>grantee</td><td>bên được cấp, nhận chuyển nhượng</td></tr>
+                <tr><td>10</td><td>assign</td><td>assignor</td><td>bên giao, chuyển quyền</td><td>assignee</td><td>bên nhận quyền</td></tr>
+                <tr><td>11</td><td>transfer</td><td>transferor</td><td>bên chuyển nhượng</td><td>transferee</td><td>bên nhận chuyển nhượng</td></tr>
+                <tr><td>12</td><td>mortgage</td><td>mortgagor</td><td>bên thế chấp</td><td>mortgagee</td><td>bên nhận thế chấp</td></tr>
+                <tr><td>13</td><td>trust</td><td>truster</td><td>người giao phó</td><td>trustee</td><td>người được ủy thác</td></tr>
+                <tr><td>14</td><td>certify</td><td>certifier</td><td>người chứng nhận</td><td>certificatee</td><td>người được cấp chứng nhận</td></tr>
+                <tr><td>15</td><td>refer</td><td>referrer</td><td>người giới thiệu</td><td>referee</td><td>người được giới thiệu / trọng tài</td></tr>
+                <tr><td>16</td><td>franchise</td><td>franchisor</td><td>bên nhượng quyền</td><td>franchisee</td><td>bên nhận quyền</td></tr>
+                <tr><td>17</td><td>bail</td><td>bailor</td><td>bên giao tài sản</td><td>bailee</td><td>bên nhận giữ tài sản</td></tr>
+                <tr><td>18</td><td>divorce</td><td>divorcer</td><td>người xin ly hôn</td><td>divorcee</td><td>người đã ly hôn</td></tr>
+                <tr><td>19</td><td>escape</td><td>escaper</td><td>người trốn thoát</td><td>escapee</td><td>người vượt ngục, trốn thoát</td></tr>
+                <tr><td>20</td><td>stand</td><td>stander</td><td>người đứng</td><td>standee</td><td>người đứng (trên xe buýt...)</td></tr>
+                <tr><td>21</td><td>induct</td><td>inductor</td><td>người tiếp nhận</td><td>inductee</td><td>người được kết nạp</td></tr>
+                <tr><td>22</td><td>enroll</td><td>enroller</td><td>người ghi danh</td><td>enrollee</td><td>người ghi danh, học viên</td></tr>
+                <tr><td>23</td><td>draft</td><td>drafter</td><td>người soạn thảo</td><td>draftee</td><td>người bị gọi nhập ngũ</td></tr>
+                <tr><td>24</td><td>auction</td><td>auctioneer</td><td>người đấu giá</td><td>auctionee</td><td>người mua qua đấu giá</td></tr>
+                <tr><td>25</td><td>adopt</td><td>adopter</td><td>người nhận nuôi</td><td>adoptee</td><td>người được nhận nuôi</td></tr>
+                <tr><td>26</td><td>board</td><td>boarder</td><td>người nội trú</td><td>boardee</td><td>người được cho lên tàu</td></tr>
+                <tr><td>27</td><td>license</td><td>licensor</td><td>bên cấp phép</td><td>licensee</td><td>bên được cấp phép</td></tr>
+                <tr><td>28</td><td>sponsor</td><td>sponsor</td><td>nhà tài trợ</td><td>sponsoree</td><td>người được tài trợ</td></tr>
+            </tbody>
+        </table>
+
+        <h2>2. Tính Từ ➔ Danh Từ (Chỉ tính chất, trạng thái)</h2>
+        <ul>
+            <li><strong>-y (-y / -ity / -ty / -cy):</strong> Chỉ mức độ, trạng thái <span class="example">safe ➔ safety, able ➔ ability</span></li>
+            <li>Đuôi <strong>-ant</strong> ➔ đổi thành <strong>-ance</strong> <span class="example">important ➔ importance</span></li>
+            <li>Đuôi <strong>-ent</strong> ➔ đổi thành <strong>-ence</strong> <span class="example">different ➔ difference</span></li>
+        </ul>
+
+        <h2>3. Danh Từ ➔ Danh Từ (Biến đổi ý nghĩa, giữ nguyên loại từ)</h2>
+        <ul>
+            <li>Nhóm hậu tố <strong>-ist / -an / -ian / -ess:</strong> Chỉ người làm nghề nghiệp, quốc tịch hoặc giới tính <span class="example">art ➔ artist, music ➔ musician</span></li>
+            <li>Nhóm hậu tố <strong>-hood / -ship / -ism / -ness / -dom:</strong> Chỉ tình trạng, cương vị, chế độ hoặc tính chất <span class="example">child ➔ childhood, king ➔ kingdom</span></li>
+        </ul>
+    </div>
+
+    <!-- TAB 2: TÍNH TỪ -->
+    <div id="adj" class="tab-content">
+        <h2>1. Động Từ ➔ Tính Từ</h2>
+        <ul>
+            <li><strong>-able / -ible:</strong> Mang ý nghĩa <em>"có thể... được"</em> <span class="example">wash ➔ washable, eat ➔ edible</span></li>
+            <li><strong>-ful:</strong> Mang ý nghĩa <em>"đầy đủ, có nhiều..."</em> <span class="example">help ➔ helpful</span></li>
+            <li><strong>-ive:</strong> Mang ý nghĩa <em>"có tính chất, có xu hướng..."</em> <span class="example">create ➔ creative</span></li>
+            <li><strong>-ant / -ent:</strong> Chỉ đặc tính, trạng thái <span class="example">persist ➔ persistent</span></li>
+        </ul>
+
+        <h2>2. Danh Từ ➔ Tính Từ</h2>
+        <ul>
+            <li><strong>-ful / -full:</strong> <span class="example">Power (sức mạnh) ➔ Powerful (mạnh mẽ)</span></li>
+            <li><strong>-less:</strong> Mang ý nghĩa <em>"không có..."</em> <span class="example">Fear (nỗi sợ) ➔ Fearless (không sợ)</span></li>
+            <li><strong>-al (-ial / -ical):</strong> Mang ý nghĩa <em>"thuộc về..."</em> <span class="example">economy ➔ economic</span></li>
+            <li><strong>-y:</strong> Mang ý nghĩa <em>"sự việc mang thuộc tính..."</em> <span class="example">Air (không khí) ➔ Airy (thoáng đãng)</span></li>
+            <li><strong>-ish:</strong> Mang ý nghĩa <em>"có tính chất như, hơi..."</em> <span class="example">child ➔ childish (trẻ con)</span></li>
+            <li><strong>-ian:</strong> Mang ý nghĩa <em>"liên quan đến một quốc gia, khu vực"</em> <span class="example">Malaysia ➔ Malaysian</span></li>
+        </ul>
+    </div>
+
+    <!-- TAB 3: TRẠNG TỪ -->
+    <div id="adv" class="tab-content">
+        <h2>1. Quy tắc cấu tạo & Ý nghĩa chung</h2>
+        <ul>
+            <li><strong>Tính từ + "-ly" = Trạng từ:</strong> Mang ý nghĩa <em>"một cách..."</em> (chỉ cách thức thực hiện hành động) <span class="example">Slow ➔ Slowly (một cách chậm chạp)</span></li>
+            <li>Tính từ kết thúc bằng đuôi <strong>"-ic"</strong> + <strong>"-ally":</strong> Chỉ phương diện, lĩnh vực <span class="example">Economic ➔ Economically (về mặt kinh tế)</span></li>
+            <li>Số đếm + hậu tố <strong>"-fold":</strong> Mang ý nghĩa <em>"nhấn mạnh số lần"</em> <span class="example">two ➔ twofold (gấp đôi)</span></li>
+            <li>Trạng từ đuôi <strong>-ward / -wards:</strong> Mang ý nghĩa <em>"chỉ hướng di chuyển hoặc sự thay đổi về phương hướng (theo hướng, về phía)"</em> <span class="example">east ➔ eastward (về hướng đông)</span></li>
+        </ul>
+
+        <h2>2. Bảng Trạng Từ khi thêm đuôi "-ly" sẽ thay đổi hẳn nghĩa</h2>
+        <table>
+            <thead>
+                <tr><th>Tính từ (Adj)</th><th>Nghĩa Adj</th><th>Trạng từ (Adv)</th><th>Ý nghĩa khác của Adv</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>hard</td><td>chăm chỉ, khó</td><td>hardly</td><td>hầu như không</td></tr>
+                <tr><td>late</td><td>muộn</td><td>lately</td><td>gần đây</td></tr>
+                <tr><td>near</td><td>gần</td><td>nearly</td><td>gần như, hầu như</td></tr>
+                <tr><td>high</td><td>cao</td><td>highly</td><td>rất, vô cùng, đánh giá cao</td></tr>
+                <tr><td>close</td><td>gần</td><td>closely</td><td>chặt chẽ, kỹ lưỡng</td></tr>
+                <tr><td>deep</td><td>sâu</td><td>deeply</td><td>sâu sắc, vô cùng</td></tr>
+                <tr><td>wide</td><td>rộng</td><td>widely</td><td>rộng rãi</td></tr>
+                <tr><td>short</td><td>ngắn</td><td>shortly</td><td>sắp, ngay sau</td></tr>
+                <tr><td>free</td><td>miễn phí, tự do</td><td>freely</td><td>một cách tự do</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TAB 4: ĐỘNG TỪ -->
+    <div id="verb" class="tab-content">
+        <h2>Các cách cấu tạo Động Từ & Ý nghĩa hậu tố</h2>
+        <ul>
+            <li><strong>Hậu tố "-en"</strong> (thường đi sau tính từ ngắn): Mang ý nghĩa <em>"làm cho trở nên..."</em> hoặc <em>"trở nên..."</em> <span class="example">deep (adj): sâu ➔ deepen (v): làm sâu hơn</span></li>
+            <li><strong>Hậu tố "-fy":</strong> Mang ý nghĩa <em>"làm cho thành...", "biến thành..."</em> <span class="example">quality (n): chất lượng ➔ qualify (v): làm cho đủ khả năng</span></li>
+            <li><strong>Hậu tố "-ate":</strong> Tạo động từ chỉ hành động thực hiện trạng thái nào đó.</li>
+            <li><strong>Hậu tố "-ize / -ise":</strong> Mang ý nghĩa <em>"thực hiện hóa...", "biến thành..."</em> <span class="example">modern (adj): hiện đại ➔ modernize / modernise (v): hiện đại hóa</span></li>
+        </ul>
+    </div>
+
+    <!-- TAB 5: TRÒ CHƠI ÔN TẬP -->
+    <div id="sec-game" class="tab-content">
+        <h2 style="text-align: center; border: none; color: var(--primary);">🎮 Trò Chơi Ôn Tập Tổng Hợp (Phần 1 & Phần 2)</h2>
+        <p style="font-size: 14px; color: #555; margin-bottom: 15px;">Chọn danh mục trò chơi ôn tập bên dưới[cite: 1]:</p>
+        
+        <div class="sub-menu">
+            <button class="sub-btn active" onclick="switchGameTab('game-er-ee')">Phần 1: Cặp Từ -Er/-Or & -Ee</button>
+            <button class="sub-btn" onclick="switchGameTab('game-noun')">Phần 2: Câu Hỏi Danh Từ</button>
+            <button class="sub-btn" onclick="switchGameTab('game-adj')">Phần 2: Câu Hỏi Tính Từ</button>
+            <button class="sub-btn" onclick="switchGameTab('game-adv')">Phần 2: Câu Hỏi Trạng Từ</button>
+            <button class="sub-btn" onclick="switchGameTab('game-verb')">Phần 2: Câu Hỏi Động Từ</button>
+        </div>
+
+        <!-- GAME PHẦN 1: ER - EE -->
+        <div id="game-er-ee" class="game-group active">
+            <h4 style="color: var(--primary);">Phần 1: Ôn Tập `-Er/-Or` (Chủ động) & `-Ee` (Bị động)[cite: 1]</h4>
+            <div id="er-ee-container"></div>
+        </div>
+
+        <!-- GAME PHẦN 2: DANH TỪ -->
+        <div id="game-noun" class="game-group">
+            <h4 style="color: var(--primary);">Phần 2: Hệ Thống Câu Hỏi Danh Từ[cite: 1]</h4>
+            
+            <div class="question-card">
+                <div class="q-header">
+                    <span>1. Nhóm đuôi chỉ hành động, quá trình: <b>-tion / -ation / -ition / -sion</b> (vd: decide ➔ decision)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: -tion / -ation / -ition / -sion')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-n-1" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-n-1', ['tion', 'ation', 'ition', 'sion'], 'res-gn-1')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gn-1"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>2. Động từ kết thúc bằng <b>-y</b> chuyển thành đuôi danh từ gì? (vd: depend ➔ dependence)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Đổi y thành i, thêm -ence')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-n-2" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-n-2', ['ence', '-ence'], 'res-gn-2')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gn-2"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>3. Động từ kết thúc bằng <b>-ure</b>, bỏ e thêm đuôi gì để thành danh từ?[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Thêm -ance')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-n-3" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-n-3', ['ance', '-ance'], 'res-gn-3')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gn-3"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>4. Động từ kết thúc bằng <b>-ear</b>, chỉ thêm đuôi gì để thành danh từ? (vd: appear ➔ appearance)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Thêm -ance')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-n-4" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-n-4', ['ance', '-ance'], 'res-gn-4')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gn-4"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>5. Nhóm hậu tố chỉ trạng thái, địa điểm hoặc quá trình: <b>-age, -ery</b> (vd: post ➔ postage)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: -age / -ery')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-n-5" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-n-5', ['age', 'ery', '-age', '-ery'], 'res-gn-5')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gn-5"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>6. Nhóm hậu tố chỉ người thực hiện hoặc chịu tác động: <b>-er / -or / -ar / -ant / -ent / -ee</b>[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: -er, -or, -ar, -ant, -ent, -ee')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-n-6" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-n-6', ['er', 'or', 'ar', 'ant', 'ent', 'ee'], 'res-gn-6')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gn-6"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>7. Nhóm đuôi chuyển tính từ thành danh từ chỉ mức độ, trạng thái: <b>-y (-y / -ity / -ty / -cy)</b> (vd: safe ➔ safety)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: -y, -ity, -ty, -cy')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-n-7" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-n-7', ['y', 'ity', 'ty', 'cy'], 'res-gn-7')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gn-7"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>8. Tính từ đuôi <b>-ant</b> đổi thành danh từ đuôi gì? (vd: important ➔ importance)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Đổi thành -ance')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-n-8" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-n-8', ['ance', '-ance'], 'res-gn-8')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gn-8"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>9. Tính từ đuôi <b>-ent</b> đổi thành danh từ đuôi gì? (vd: different ➔ difference)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Đổi thành -ence')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-n-9" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-n-9', ['ence', '-ence'], 'res-gn-9')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gn-9"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>10. Nhóm hậu tố giữ nguyên loại từ nhưng chỉ nghề nghiệp, quốc tịch, giới tính: <b>-ist / -an / -ian / -ess</b> (vd: art ➔ artist)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: -ist, -an, -ian, -ess')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-n-10" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-n-10', ['ist', 'an', 'ian', 'ess'], 'res-gn-10')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gn-10"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>11. Nhóm hậu tố giữ nguyên loại từ nhưng chỉ tình trạng, cương vị, chế độ, tính chất: <b>-hood / -ship / -ism / -ness / -dom</b>[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: -hood, -ship, -ism, -ness, -dom')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-n-11" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-n-11', ['hood', 'ship', 'ism', 'ness', 'dom'], 'res-gn-11')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gn-11"></div>
+            </div>
+        </div>
+
+        <!-- GAME PHẦN 2: TÍNH TỪ -->
+        <div id="game-adj" class="game-group">
+            <h4 style="color: var(--primary);">Phần 2: Hệ Thống Câu Hỏi Tính Từ[cite: 1]</h4>
+            
+            <div class="question-card">
+                <div class="q-header">
+                    <span>1. Động từ + đuôi <b>-able / -ible</b> mang ý nghĩa gì? (vd: wash ➔ washable)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Có thể... được')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-adj-1" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-adj-1', ['able', 'ible', 'có thể'], 'res-gadj-1')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gadj-1"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>2. Hậu tố <b>-ful</b> mang ý nghĩa gì khi cấu tạo tính từ? (vd: help ➔ helpful)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Đầy đủ, có nhiều...')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-adj-2" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-adj-2', ['ful', 'đầy đủ', 'có nhiều'], 'res-gadj-2')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gadj-2"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>3. Hậu tố <b>-ive</b> mang ý nghĩa gì? (vd: create ➔ creative)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Có tính chất, có xu hướng...')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-adj-3" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-adj-3', ['ive', 'tính chất', 'xu hướng'], 'res-gadj-3')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gadj-3"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>4. Hậu tố <b>-ant / -ent</b> cấu tạo tính từ chỉ gì? (vd: persist ➔ persistent)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Chỉ đặc tính, trạng thái')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-adj-4" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-adj-4', ['ant', 'ent', 'đặc tính', 'trạng thái'], 'res-gadj-4')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gadj-4"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>5. Hậu tố <b>-less</b> mang ý nghĩa gì? (vd: fear ➔ fearless)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Không có')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-adj-5" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-adj-5', ['less', 'không có'], 'res-gadj-5')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gadj-5"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>6. Hậu tố <b>-al (-ial / -ical)</b> mang ý nghĩa gì? (vd: economy ➔ economic)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Thuộc về...')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-adj-6" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-adj-6', ['al', 'ial', 'ical', 'thuộc về'], 'res-gadj-6')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gadj-6"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>7. Hậu tố <b>-y</b> từ danh từ tạo tính từ mang nghĩa gì? (vd: air ➔ airy)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Sự việc mang thuộc tính...')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-adj-7" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-adj-7', ['y', 'thuộc tính'], 'res-gadj-7')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gadj-7"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>8. Hậu tố <b>-ish</b> mang ý nghĩa gì? (vd: child ➔ childish)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Có tính chất như, hơi...')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-adj-8" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-adj-8', ['ish', 'tính chất như', 'hơi'], 'res-gadj-8')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gadj-8"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>9. Hậu tố <b>-ian</b> khi đi với quốc gia, khu vực mang ý nghĩa gì? (vd: Malaysia ➔ Malaysian)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Liên quan đến một quốc gia, khu vực')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-adj-9" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-adj-9', ['ian', 'quốc gia', 'khu vực'], 'res-gadj-9')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gadj-9"></div>
+            </div>
+        </div>
+
+        <!-- GAME PHẦN 2: TRẠNG TỪ -->
+        <div id="game-adv" class="game-group">
+            <h4 style="color: var(--primary);">Phần 2: Hệ Thống Câu Hỏi Trạng Từ[cite: 1]</h4>
+            
+            <div class="question-card">
+                <div class="q-header">
+                    <span>1. Tính từ + đuôi <b>"-ly"</b> tạo thành trạng từ mang ý nghĩa gì? (vd: slow ➔ slowly)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Một cách...')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-adv-1" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-adv-1', ['ly', '-ly', 'một cách'], 'res-gadv-1')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gadv-1"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>2. Tính từ kết thúc bằng đuôi <b>"-ic"</b> khi chuyển sang trạng từ sẽ thêm gì? (vd: Economic ➔ Economically)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: -ally')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-adv-2" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-adv-2', ['ally', '-ally'], 'res-gadv-2')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gadv-2"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>3. Số đếm kết hợp với hậu tố <b>"-fold"</b> mang ý nghĩa gì? (vd: two ➔ twofold)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Nhấn mạnh số lần, gấp đôi...')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-adv-3" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-adv-3', ['fold', 'số lần', 'gấp đôi'], 'res-gadv-3')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gadv-3"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>4. Trạng từ đuôi <b>-ward / -wards</b> mang ý nghĩa gì? (vd: east ➔ eastward)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Chỉ hướng di chuyển, về phía...')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-adv-4" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-adv-4', ['ward', 'wards', 'hướng', 'về phía'], 'res-gadv-4')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gadv-4"></div>
+            </div>
+        </div>
+
+        <!-- GAME PHẦN 2: ĐỘNG TỪ -->
+        <div id="game-verb" class="game-group">
+            <h4 style="color: var(--primary);">Phần 2: Hệ Thống Câu Hỏi Động Từ[cite: 1]</h4>
+            
+            <div class="question-card">
+                <div class="q-header">
+                    <span>1. Hậu tố <b>"-en"</b> (thường đi sau tính từ ngắn) mang ý nghĩa gì? (vd: deep ➔ deepen)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Làm cho trở nên...')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-v-1" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-v-1', ['en', '-en', 'làm cho trở nên'], 'res-gv-1')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gv-1"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>2. Hậu tố <b>"-fy"</b> mang ý nghĩa gì? (vd: quality ➔ qualify)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Làm cho thành..., biến thành...')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-v-2" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-v-2', ['fy', '-fy', 'làm cho thành', 'biến thành'], 'res-gv-2')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gv-2"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>3. Hậu tố <b>"-ate"</b> tạo động từ chỉ gì?[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Hành động thực hiện trạng thái nào đó')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-v-3" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-v-3', ['ate', '-ate', 'hành động'], 'res-gv-3')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gv-3"></div>
+            </div>
+            <div class="question-card">
+                <div class="q-header">
+                    <span>4. Hậu tố <b>"-ize / -ise"</b> mang ý nghĩa gì? (vd: modern ➔ modernize)[cite: 1]</span>
+                    <span class="flashcard-toggle" onclick="toggleFlashcard(this, 'Gợi ý: Thực hiện hóa..., biến thành...')">💡 Flashcard gợi ý[cite: 1]</span>
+                </div>
+                <div>
+                    <input type="text" id="g-v-4" placeholder="Nhập từ khóa đáp án...">
+                    <button class="btn-check" onclick="checkInput('g-v-4', ['ize', 'ise', 'thực hiện hóa', 'biến thành'], 'res-gv-4')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-gv-4"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Dữ liệu cho phần trò chơi er - ee
+    const erEeData = [
+        { v: "employ", er: "employer", erMeaning: "Người tuyển dụng", ee: "employee", eeMeaning: "Nhân viên, người được tuyển dụng" },
+        { v: "interview", er: "interviewer", erMeaning: "Người phỏng vấn", ee: "interviewee", eeMeaning: "Người được phỏng vấn" },
+        { v: "examine", er: "examiner", erMeaning: "Giám khảo, người kiểm tra", ee: "examinee", eeMeaning: "Thí sinh, người được kiểm tra" },
+        { v: "train", er: "trainer", erMeaning: "Huấn luyện viên", ee: "trainee", eeMeaning: "Thực tập sinh, người được đào tạo" },
+        { v: "appoint", er: "appointer", erMeaning: "Người bổ nhiệm", ee: "appointee", eeMeaning: "Người được bổ nhiệm" },
+        { v: "nominate", er: "nominator", erMeaning: "Người đề cử", ee: "nominee", eeMeaning: "Người được đề cử" },
+        { v: "pay", er: "payer", erMeaning: "Người trả tiền", ee: "payee", eeMeaning: "Người nhận tiền" },
+        { v: "lease", er: "lessor", erMeaning: "Bên cho thuê", ee: "lessee", eeMeaning: "Bên thuê" },
+        { v: "grant", er: "grantor", erMeaning: "Bên cấp, chuyển nhượng", ee: "grantee", eeMeaning: "Bên được cấp, nhận chuyển nhượng" },
+        { v: "assign", er: "assignor", erMeaning: "Bên giao, chuyển quyền", ee: "assignee", eeMeaning: "Bên nhận quyền" },
+        { v: "transfer", er: "transferor", erMeaning: "Bên chuyển nhượng", ee: "transferee", eeMeaning: "Bên nhận chuyển nhượng" },
+        { v: "mortgage", er: "mortgagor", erMeaning: "Bên thế chấp", ee: "mortgagee", eeMeaning: "Bên nhận thế chấp" },
+        { v: "trust", er: "truster", erMeaning: "Người giao phó", ee: "trustee", eeMeaning: "Người được ủy thác" },
+        { v: "certify", er: "certifier", erMeaning: "Người chứng nhận", ee: "certificatee", eeMeaning: "Người được cấp chứng nhận" },
+        { v: "refer", er: "referrer", erMeaning: "Người giới thiệu", ee: "referee", eeMeaning: "Người được giới thiệu / trọng tài" },
+        { v: "franchise", er: "franchisor", erMeaning: "Bên nhượng quyền", ee: "franchisee", eeMeaning: "Bên nhận quyền" },
+        { v: "bail", er: "bailor", erMeaning: "Bên giao tài sản", ee: "bailee", eeMeaning: "Bên nhận giữ tài sản" },
+        { v: "divorce", er: "divorcer", erMeaning: "Người xin ly hôn", ee: "divorcee", eeMeaning: "Người đã ly hôn" },
+        { v: "escape", er: "escaper", erMeaning: "Người trốn thoát", ee: "escapee", eeMeaning: "Người vượt ngục, trốn thoát" },
+        { v: "stand", er: "stander", erMeaning: "Người đứng", ee: "standee", eeMeaning: "Người đứng (trên xe buýt...)" },
+        { v: "induct", er: "inductor", erMeaning: "Người tiếp nhận", ee: "inductee", eeMeaning: "Người được kết nạp" },
+        { v: "enroll", er: "enroller", erMeaning: "Người ghi danh", ee: "enrollee", eeMeaning: "Người ghi danh, học viên" },
+        { v: "draft", er: "drafter", erMeaning: "Người soạn thảo", ee: "draftee", eeMeaning: "Người bị gọi nhập ngũ" },
+        { v: "auction", er: "auctioneer", erMeaning: "Người đấu giá", ee: "auctionee", eeMeaning: "Người mua qua đấu giá" },
+        { v: "adopt", er: "adopter", erMeaning: "Người nhận nuôi", ee: "adoptee", eeMeaning: "Người được nhận nuôi" },
+        { v: "board", er: "boarder", erMeaning: "Người nội trú", ee: "boardee", eeMeaning: "Người được cho lên tàu" },
+        { v: "license", er: "licensor", erMeaning: "Bên cấp phép", ee: "licensee", eeMeaning: "Bên được cấp phép" },
+        { v: "sponsor", er: "sponsor", erMeaning: "Nhà tài trợ", ee: "sponsoree", eeMeaning: "Người được tài trợ" }
+    ];
+
+    function renderErEeGame() {
+        let container = document.getElementById('er-ee-container');
+        let html = '';
+        erEeData.forEach((item, index) => {
+            let num = index + 1;
+            html += `
+            <div class="question-card">
+                <div class="q-header">
+                    <span>${num}. ${item.er} <span class="flashcard-toggle" onclick="toggleFlashcard(this, '${item.erMeaning}')">💡 Lật xem nghĩa</span> / ${item.ee} <span class="flashcard-toggle" onclick="toggleFlashcard(this, '${item.eeMeaning}')">💡 Lật xem nghĩa</span></span>
+                    <button class="btn-speak" onclick="speakText('${item.er} and ${item.ee}')">🔊 Nghe</button>
+                </div>
+                <div>Nhập nghĩa tiếng Việt của từ <b>${item.ee}</b>:</div>
+                <div style="margin-top: 10px;">
+                    <input type="text" id="ans-er-${num}" placeholder="Nhập nghĩa...">
+                    <button class="btn-check" onclick="checkErInput('ans-er-${num}', '${item.eeMeaning}', 'res-er-${num}')">Kiểm tra</button>
+                </div>
+                <div class="result-msg" id="res-er-${num}"></div>
+            </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    window.onload = function() {
+        renderErEeGame();
+    };
+
+    // Điều hướng giữa các tab chính trên thanh menu (Danh từ, Tính từ, Trạng từ, Động từ, Trò chơi)
+    function openMainTab(evt, tabName) {
+        let tabContent = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < tabContent.length; i++) {
+            tabContent[i].classList.remove("active");
+        }
+        
+        let tabBtns = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < tabBtns.length; i++) {
+            tabBtns[i].classList.remove("active");
+        }
+        
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
+    // Điều hướng các phần trò chơi con bên trong tab Trò Chơi Ôn Tập
+    function switchGameTab(groupId) {
+        let buttons = document.querySelectorAll('#sec-game .sub-btn');
+        buttons.forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        let groups = document.querySelectorAll('.game-group');
+        groups.forEach(g => g.classList.remove('active'));
+        
+        document.getElementById(groupId).classList.add('active');
+    }
+
+    function toggleFlashcard(element, hiddenText) {
+        if (element.getAttribute('data-shown') === 'true') {
+            element.innerHTML = "💡 Lật xem nghĩa";
+            element.style.background = "#fef3c7";
+            element.style.color = "#d97706";
+            element.setAttribute('data-shown', 'false');
+        } else {
+            element.innerHTML = "✨ " + hiddenText;
+            element.style.background = "#dcfce7";
+            element.style.color = "#16a34a";
+            element.setAttribute('data-shown', 'true');
+        }
+    }
+
+    function speakText(text) {
+        if ('speechSynthesis' in window) {
+            let utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
+        } else {
+            alert('Trình duyệt của bạn không hỗ trợ phát âm!');
+        }
+    }
+
+    function checkErInput(inputId, correctMeaning, resultId) {
+        let val = document.getElementById(inputId).value.trim().toLowerCase();
+        let resDiv = document.getElementById(resultId);
+        if (!val) {
+            resDiv.style.color = "orange";
+            resDiv.innerHTML = "⚠️ Vui lòng nhập nghĩa!";
+            return;
+        }
+        let cleanCorrect = correctMeaning.toLowerCase();
+        if (cleanCorrect.includes(val) || val.split(' ').some(word => word.length > 2 && cleanCorrect.includes(word))) {
+            resDiv.style.color = "var(--success-color)";
+            resDiv.innerHTML = "🎉 Chính xác!";
+        } else {
+            resDiv.style.color = "var(--error-color)";
+            resDiv.innerHTML = "❌ Chưa chính xác, hãy lật flashcard xem lại nhé!";
+        }
+    }
+
+    function checkInput(inputId, keywords, resultId) {
+        let val = document.getElementById(inputId).value.trim().toLowerCase();
+        let resDiv = document.getElementById(resultId);
+        if (!val) {
+            resDiv.style.color = "orange";
+            resDiv.innerHTML = "⚠️ Vui lòng điền câu trả lời!";
+            return;
+        }
+        let isMatched = keywords.some(kw => val.includes(kw.toLowerCase()));
+        if (isMatched) {
+            resDiv.style.color = "var(--success-color)";
+            resDiv.innerHTML = "🎉 Tuyệt vời, bạn điền chính xác!";
+        } else {
+            resDiv.style.color = "var(--error-color)";
+            resDiv.innerHTML = "❌ Chưa đúng lắm, hãy thử lật flashcard gợi ý bên cạnh nhé!";
+        }
+    }
+</script>
+
+</body>
+</html>
